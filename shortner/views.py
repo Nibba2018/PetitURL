@@ -1,12 +1,17 @@
 import datetime
 import hashlib
+from enum import Enum
 
+from django.db.models import F
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
 
 # Create your views here.
+from accounts.models import User
 from shortner.models import Url
+
+FREE_LIMIT = 5
 
 
 def shorten(request):
@@ -18,6 +23,9 @@ def shorten(request):
 def create(request):
     if request.method == 'POST':
         url = request.POST['link']
+        if not request.user.has_premium and request.user.url_count >= FREE_LIMIT:
+            return HttpResponse("LIMIT REACHED!!")
+
         hash_ = hashlib.md5()
         hash_.update(url.encode())
         hash_.update(request.user.username.encode())
@@ -26,6 +34,7 @@ def create(request):
                       created_at=datetime.date.today(),
                       expires_at=datetime.date.today() + datetime.timedelta(days=14),
                       created_by=request.user)
+        User.objects.filter(username=request.user.username).update(url_count=request.user.url_count + 1)
         new_url.save()
         return HttpResponse(short_id)
 

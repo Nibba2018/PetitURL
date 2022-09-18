@@ -6,4 +6,5 @@ from django.db import models
 class User(AbstractUser):
     email_id = models.EmailField(max_length=128, blank=True)
     has_premium = models.BooleanField(default=False)
+    url_count = models.PositiveIntegerField(default=0)
 

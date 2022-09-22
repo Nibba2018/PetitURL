@@ -101,7 +101,7 @@ section {
         csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
       },
       success: function(data){
-        $('h2').html("www.petitURL.com/"+data)
+        $('h2').html(data)
       }
     });
   });

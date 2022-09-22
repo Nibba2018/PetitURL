@@ -1,8 +1,6 @@
 import datetime
 import hashlib
-from enum import Enum
 
-from django.db.models import F
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
@@ -36,10 +34,9 @@ def create(request):
                       created_by=request.user)
         User.objects.filter(username=request.user.username).update(url_count=request.user.url_count + 1)
         new_url.save()
-        return HttpResponse(short_id)
+        return HttpResponse(f'{request.get_host()}/{short_id}')
 
 
 def redirect_url(request, short_id):
-    print(request.META.get('REMOTE_ADDR'), request.META.get('HTTP_X_FORWARDED_FOR'))
     url_details = Url.objects.get(short_id=short_id)
     return redirect(url_details.link)

@@ -1,11 +1,14 @@
 import datetime
 import hashlib
 
-from django.http import HttpResponse
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 
 
 # Create your views here.
+from django.urls import reverse
+
 from accounts.models import User
 from shortner.models import Url
 
@@ -18,6 +21,7 @@ def shorten(request):
     return render(request, 'index.html')
 
 
+@login_required
 def create(request):
     if request.method == 'POST':
         url = request.POST['link']
@@ -42,12 +46,19 @@ def redirect_url(request, short_id):
     return redirect(url_details.link)
 
 
+@login_required
 def list_urls(request):
-    if not request.user.is_authenticated:
-        return render(request, "index.html")
     username = request.user.username
     urls = Url.objects.filter(created_by__username=username)
     context = {
         'urls': urls
     }
     return render(request, 'shortner/list_urls.html', context)
+
+
+@login_required
+def delete_url(request, short_id):
+    url = Url.objects.get(short_id=short_id)
+    User.objects.filter(username=request.user.username).update(url_count=request.user.url_count - 1)
+    url.delete()
+    return HttpResponseRedirect(reverse('urls'))

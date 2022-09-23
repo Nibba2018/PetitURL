@@ -40,3 +40,14 @@ def create(request):
 def redirect_url(request, short_id):
     url_details = Url.objects.get(short_id=short_id)
     return redirect(url_details.link)
+
+
+def list_urls(request):
+    if not request.user.is_authenticated:
+        return render(request, "index.html")
+    username = request.user.username
+    urls = Url.objects.filter(created_by__username=username)
+    context = {
+        'urls': urls
+    }
+    return render(request, 'shortner/list_urls.html', context)

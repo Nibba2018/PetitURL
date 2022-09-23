@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Saved Urls</title>
+</head>
+<body>
+    {% if urls %}
+        <table>
+            <tr>
+                <th>URL</th>
+                <th>Created_at</th>
+                <th>Expires_at</th>
+                <th>Short_URL</th>
+            </tr>
+            {% for url in urls %}
+            <tr>
+                <td>{{ url.link }}</td>
+                <td>{{ url.created_at }}</td>
+                <td>{{ url.expires_at }}</td>
+                <td>{{ url.short_id }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        No URLs saved so far.
+    {% endif %}
+</body>
+</html>

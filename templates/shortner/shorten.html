@@ -74,15 +74,22 @@ section {
     </style>
 </head>
 <main>
-  <h3 style="color: white">Welcome {{ user.username }}!</h3>
-  <p><a href="{% url 'logout' %}">Log Out</a></p>
-  <h1>PetitURL</h1>
+  <h3 style="color: white">
+      Welcome {{ user.username }}!
+  </h3>
+  <p>
+      <a href="{% url 'logout' %}">Log Out</a>
+      <a href="{% url 'urls' %}">Show urls</a>
+  </p>
+  <h1>
+      PetitURL
+  </h1>
   <form id="post-form">
     {% csrf_token %}
-  <input type="text" name="link" id="link" placeholder="Enter URL here">
-  <div class="buttons">
-    <button type="submit" id="shorten">Shorten</button>
-  </div>
+      <input type="text" name="link" id="link" placeholder="Enter URL here">
+      <div class="buttons">
+        <button type="submit" id="shorten">Shorten</button>
+      </div>
   </form>
 
   <section id="section"><h2></h2></section>

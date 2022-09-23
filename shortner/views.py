@@ -15,9 +15,10 @@ from shortner.models import Url
 FREE_LIMIT = 5
 
 
-@login_required
 def shorten(request):
-    return render(request, 'shortner/shorten.html')
+    if request.user.is_authenticated:
+        return render(request, 'shortner/shorten.html')
+    return render(request, 'index.html')
 
 
 @login_required

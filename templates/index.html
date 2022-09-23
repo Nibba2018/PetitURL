@@ -7,7 +7,7 @@
   Hi {{ user.username }}!
   <p><a href="{% url 'logout' %}">Log Out</a></p>
 {% else %}
-  <p>Please signin to use PetitURL!</p>
+  <p>Please sign-in or sign-up to use PetitURL!</p>
   <a href="{% url 'login' %}">Log In</a> |
   <a href="{% url 'signup' %}">Sign Up</a>
 {% endif %}
